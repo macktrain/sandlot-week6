@@ -25,8 +25,9 @@
 #today
 {
     border: solid 1px black;
-    height: 175px;
+    height: 215px;
     align-content: center;
+    padding-left: 5px;
 }
 
 body
@@ -75,7 +76,7 @@ body h1
     padding-left: 5px;
 }
 
-#searchText, #searchBtn
+#searchText, #searchBtn, .historyBtn
 {   
     border-radius: 5px;
     font-size: 14px;
@@ -104,8 +105,9 @@ body h1
 
 .historyBtn
 {
-    background-color: rgb(185, 185, 185);
+    background-color: rgb(200, 199, 199);
     color: black;
+    width: 100%;
 }
 
 hr 
@@ -121,4 +123,23 @@ hr
 #searchCriteria h2
 {
     margin-top: 0;
+}
+
+.todayDetail
+{
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+#uvDivEl
+{
+    width: 50px;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 3px;
+}
+
+#todaysUV
+{
+    display: flex;
 }
