@@ -1,12 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./Assets/style/weather.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>
+            Weather Dashboard
+        </h1>
+        <div id="dashboard">
+            <div id="search">
+                <div id="searchCriteria">
+                    <div>
+                        <h2>
+                            Search For a City:
+                        </h2>
+                    </div>
+                    <div>
+                        <input type=text id="searchText" placeholder="Enter a City">
+                    </div>
+                    <div>
+                        <button id="searchBtn">Search</button>
+                    </div>
+                    <hr>
+                    <div id="history">
+                    </div>
+                </div>
+            </div>
+            <div id="results">
+                <div id="today">
+                    <h2>
+                        <div id="todaysHeader">
+                        </div>
+                    </h2>
+                    <div id="todaysTemp">
+                    </div>
+                    <div id="todaysWind">
+                    </div>
+                    <div id="todaysHumidity">
+                    </div>
+                    <div id="todaysUV">
+                    </div>
+                </div>
+                <div id="multiDay">
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="Assets/js/weather.js"></script>
 </html>

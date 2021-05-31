@@ -1,0 +1,46 @@
+#searchCriteria 
+{
+    display: flex;
+    flex-direction: column;
+}
+
+#results 
+{
+    display: flex;
+    flex-direction: column;
+}
+
+#today
+{
+    border: solid 1px black;
+}
+
+body
+{
+    display: flex;
+    flex-direction: column;
+}
+body h1
+{
+ width: auto;
+}
+
+#dashboard
+{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+#todaysHeader
+{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+#todaysHeader img
+{
+    height: 35px;
+    vertical-align:  bottom;
+}
