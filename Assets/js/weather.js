@@ -24,7 +24,9 @@ var time = today.getTime();
 
 searchBtn.addEventListener("click", function() {getLatLon(searchText.value);}, false);
 
-function getLatLon(input)
+prePopulate ();
+
+function getLatLon(input,history)
 {
 	if (input.length === 0) 
 	{
@@ -56,8 +58,9 @@ function getLatLon(input)
 		var lon = data[0].lon;
 		
 		getCurrWeather(lat, lon);
-		add2History(input);
 		getForecast(input);
+		if (!history) add2History(input);
+		
 	})
 	// Logs errors in console
 	.catch(function (error) 
@@ -187,11 +190,40 @@ function add2History(name)
 	var newBtn = document.createElement('button');
 	newBtn.setAttribute("type", "button");
 	newBtn.setAttribute("class", "historyBtn");
+	newBtn.setAttribute("onClick", "getLatLon('"+ name +"','0')");
 	newBtn.setAttribute("value", name);
 	newBtn.innerHTML = name;
-	history.appendChild(newBtn);
-}
+	//makes the last search first/most recent
+	history.insertBefore(newBtn, history.childNodes[0]);
 
+	//Initialize local storage for future use
+	if ("weatherAppInit" in localStorage)
+	{
+		var savedCities = JSON.parse(localStorage.getItem("weatherApp"));
+	}
+	else
+	{
+		//This is done to let the app know if the array of previous selections was made or not
+		localStorage.setItem('weatherAppInit', 'weatherAppInit');
+		//Initialize the localstorage array
+		var savedCities = [];
+		localStorage.setItem('weatherApp', JSON.stringify(savedCities));
+	}
+		//We are managing a rolling list of 10 cities 
+	if (savedCities.length < 3)
+	{
+		savedCities.splice(0, 0, name);
+	}
+	else
+	{
+		//Add the newest to the beginning
+		savedCities.splice(0, 0, name);
+		//Remove the 11th element
+		savedCities.pop();
+	}
+	
+	localStorage.setItem("weatherApp", JSON.stringify(savedCities));
+}
 
 function getUVI(lon, lat)
 {
@@ -228,5 +260,23 @@ function getUVI(lon, lat)
 	{
 		console.log('Error weather forecast:  ', error);
 	});
-	
+}
+
+function prePopulate()
+{
+	if ("weatherAppInit" in localStorage)
+	{
+		var savedCities = JSON.parse(localStorage.getItem("weatherApp"));
+
+		for (var i = 0; i < savedCities.length; i++)
+		{
+			var newBtn = document.createElement('button');
+			newBtn.setAttribute("type", "button");
+			newBtn.setAttribute("class", "historyBtn");
+			newBtn.setAttribute("onClick", "getLatLon('"+ savedCities[i] +"','1')");
+			newBtn.setAttribute("value", savedCities[i]);
+			newBtn.innerHTML = savedCities[i];
+			history.appendChild(newBtn);
+		}
+	}
 }
