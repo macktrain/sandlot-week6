@@ -6,15 +6,14 @@ const todaysWind = document.getElementById("todaysWind");
 const todaysHumidity = document.getElementById("todaysHumidity");
 const todaysUV = document.getElementById("todaysUV");
 const history = document.getElementById("history");
+const multiDay = document.getElementById("multiDay");
 var weatherImg = "";
-var city = "Denver";
 var state = "";
 var numDays = 6;
 var weatherData = new Object();
 var listArr = new Array(5);
 var todaysWeather = new Object();
 
-//example  http://openweathermap.org/img/wn/10d@2x.png
 var imgPath = " http://openweathermap.org/img/wn/";
 
 todaysHeader.textContent = "Today's Accu-Weather";
@@ -24,10 +23,6 @@ var date = " (" + (today.getMonth()+1) + "/" + today.getDate() + "/" + today.get
 var time = today.getTime();
 
 searchBtn.addEventListener("click", function() {getLatLon(searchText.value);}, false);
-
-//getForecast(city);
-//getCurrWeather(city);
-//getLatLon();
 
 function getLatLon(input)
 {
@@ -53,7 +48,6 @@ function getLatLon(input)
 	{ 
 		return response.json();
 	})
-	// Log the petData
 	.then(function (data) 
 	{
 		console.log('Longitude & Latitude', data);
@@ -63,11 +57,82 @@ function getLatLon(input)
 		
 		getCurrWeather(lat, lon);
 		add2History(input);
+		getForecast(input);
 	})
 	// Logs errors in console
 	.catch(function (error) 
 	{
 		alert(input + ' is not valid. Please enter a valid city');
+	});
+	
+}
+
+function getForecast(citySearch)
+{
+	//Daily Forecast 16 Days but only pulling s days (parm ctn=x) to 
+	//present the current day and the next (x-1) days
+	fetch('https://api.openweathermap.org/data/2.5/forecast/daily?q='+ citySearch +',us&cnt='+ numDays +'&units=imperial&appid='+ apiKey)
+	// Return the API response as JSON
+	.then(function (response) 
+	{ 
+		return response.json();
+	})	
+	.then(function (data) 
+	{
+		console.log('5-Day Forecast', data);
+		multiDay.innerHTML = "";
+		//Set the data neede from dataset
+		for (var i=1; i< data.cnt; i++)
+		{
+			//Parent Div
+			var nextDay = document.createElement('div');
+			nextDay.setAttribute("id", "nextDay"+i);
+			nextDay.setAttribute("class", "nextDay");
+			nextDay.style.backgroundColor = "#33475A";
+
+			//Child Div with date
+			var timestamp = data.list[i].dt;
+			var date = new Date(timestamp*1000);
+			var nextDayDate = document.createElement('div');
+			nextDayDate.setAttribute("class", "needsBold");
+			nextDay.appendChild(nextDayDate);
+			nextDayDate.textContent = date.getMonth()+"/"+(date.getDate()+1)+"/"+date.getFullYear();
+	
+			//Child Div to add forecasted weather icon
+			var forecastWeatherImg = document.createElement('img');
+			var icon = data.list[i].weather[0].icon;
+			forecastWeatherImg.setAttribute("src", imgPath + icon +"@2x.png");
+			forecastWeatherImg.setAttribute("width", "50px");
+			forecastWeatherImg.setAttribute("height", "50px");
+			nextDay.appendChild(forecastWeatherImg);
+		
+			//Child Div for Temp
+			var nextDayTemp = document.createElement('div');
+			nextDayTemp.setAttribute("class", "forecastData");
+			nextDay.appendChild(nextDayTemp);
+			nextDay.style.padding = "7px";
+			//chose feel_like because there is a data error on the side of openWeather
+			nextDayTemp.textContent = "Temp: " + data.list[i].feels_like.day + "°F";
+
+			//Child Div for Wind
+			var nextDayWind = document.createElement('div');
+			nextDayWind.setAttribute("class", "forecastData");
+			nextDay.appendChild(nextDayWind);
+			nextDayWind.textContent = "Wind: " + data.list[i].speed + " MPH";
+
+			//Child Div for Humidity
+			var nextDayHumidity = document.createElement('div');
+			nextDayHumidity.setAttribute("class", "forecastData");
+			nextDay.appendChild(nextDayHumidity);
+			nextDayHumidity.textContent = "Humidity: " + data.list[i].humidity + "%";
+
+			multiDay.appendChild(nextDay);
+		} 
+	})
+	// Logs errors in console
+	.catch(function (error) 
+	{
+		console.log('Error weather forecast:  ', error);
 	});
 	
 }
@@ -97,36 +162,8 @@ function getCurrWeather(latitude, longitude)
 	
 }
 
-function getForecast(citySearch)
-{
-	//Daily Forecast 16 Days but only pulling s days (parm ctn=x) to 
-	//present the current day and the next (x-1) days
-	fetch('https://api.openweathermap.org/data/2.5/forecast/daily?q='+ citySearch +',us&units=imperial&cnt='+ numDays +'&appid='+ apiKey)
-	// Return the API response as JSON
-	.then(function (response) 
-	{ 
-		return response.json();
-	})
-	// Log the petData
-	.then(function (data) 
-	{
-		console.log('weather', data);
-		//Set the data neede from dataset
-		weatherData = data.city;
-		listArr = data.list;
-		showForecast ();
-	})
-	// Logs errors in console
-	.catch(function (error) 
-	{
-		console.log('Error weather forecast:  ', error);
-	});
-	
-}
-
 function showCurrentWeather(lat, lon)
 {
-	var clouds
 	todaysHeader.textContent = todaysWeather.name +" "+ date;
 	
 	weatherImg = document.createElement('img');

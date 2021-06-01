@@ -17,7 +17,7 @@
 #results 
 {
     display: flex;
-    width: 950px;
+    width: 925px;
     flex-direction: column;
     margin: 0px 10px;
 }
@@ -54,6 +54,11 @@ body h1
  text-align: center;
  justify-content: center;
  align-items: center;
+}
+
+body h3
+{
+  font-size: larger;
 }
 
 #dashboard
@@ -137,9 +142,37 @@ hr
     text-align: center;
     border-radius: 5px;
     margin-left: 3px;
+    color:white;
 }
 
 #todaysUV
 {
     display: flex;
+}
+
+#multiDay
+{
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.nextDay
+{
+    width: 135px;
+    height: 185px;
+    color:white;
+    padding-top: 1px;
+}
+
+.needsBold
+{  
+  font-weight: bold;
+  font-size: larger;
+}
+
+.forecastData
+{   
+  font-size: 15px;
+  padding-bottom: 25px;
 }
