@@ -190,6 +190,7 @@ function add2History(name)
 	var newBtn = document.createElement('button');
 	newBtn.setAttribute("type", "button");
 	newBtn.setAttribute("class", "historyBtn");
+	newBtn.setAttribute("id", name);
 	newBtn.setAttribute("onClick", "getLatLon('"+ name +"','0')");
 	newBtn.setAttribute("value", name);
 	newBtn.innerHTML = name;
@@ -210,7 +211,7 @@ function add2History(name)
 		localStorage.setItem('weatherApp', JSON.stringify(savedCities));
 	}
 		//We are managing a rolling list of 10 cities 
-	if (savedCities.length < 3)
+	if (savedCities.length < 10)
 	{
 		savedCities.splice(0, 0, name);
 	}
@@ -220,6 +221,7 @@ function add2History(name)
 		savedCities.splice(0, 0, name);
 		//Remove the 11th element
 		savedCities.pop();
+		history.removeChild(history.lastElementChild);
 	}
 	
 	localStorage.setItem("weatherApp", JSON.stringify(savedCities));
